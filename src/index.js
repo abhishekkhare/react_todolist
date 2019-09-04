@@ -7,7 +7,7 @@ import MyInfo from "./components/MyInfo"
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <MyInfo/>,
+    <App/>,
     document.getElementById("root")
 )
 
