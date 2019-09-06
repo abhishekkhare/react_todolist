@@ -1,22 +1,32 @@
 /*
-Let's practice props and mapping components on our todo list app!
+In the previous iteration of this todo list app, we pulled in todos data from a JSON file and mapped over it to display the todo items.
 
-I've created a js file with some todos data in it, which I'm imported into this file. (Normally this data would come from an API call, not a local file).
+Eventually we'll want to be able to modify the data, which will only happen if we've "loaded" the data in to the component's state
 
-Challenge: Using the array map method, render a child component for each todo item in the todosData array and pass the relevant data to it.
+Challenge: Change the <App /> component into a stateful class component and load the imported `todosData` into state.
 */
 
 import React from "react"
 import TodoItem from "./components/TodoItem"
 import todosData from "./data/todosData"
 
-function App() {
-    const todosDataComponents = todosData.map(item => <TodoItem key={item.id} todoItem={item}/>)
-    return (
-        <div className="todo-list">
-            {todosDataComponents}
-        </div>
-    )
+class App extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            todos: todosData
+        }
+    }
+
+    render() {
+        const todoItems = this.state.todos.map(item => <TodoItem key={item.id} todoItem={item}/>)
+
+        return (
+            <div className="todo-list">
+                {todoItems}
+            </div>
+        )
+    }
 }
 
 export default App
