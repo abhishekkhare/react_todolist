@@ -1,46 +1,48 @@
+/**
+ * Let's make it so our checkbox can actually mark our todo as complete or incomplete!
+ * This challenge is a little more involved than some of the past ones. Check the comments
+ * in the code for some help on accomplishing this one
+ *
+ * Challenge:
+ * 1. Create an event handler in the App component for when the checkbox is clicked (which is an `onChange` event)
+ *    a. This method will be the trickest part. Check the comments in the stubbed-out method below for some pseudocode to help guide you through this part
+ * 2. Pass the method down to the TodoItem component
+ * 3. In the TodoItem component, make it so when the `onChange` event happens, it calls the `handleChange` method and passes the id of the todo into the function
+ */
+
 import React from "react"
-
-/*
-Challenge:
-
-Given a stateless functional component:
-1. Follow the steps necessary to add state to it,
-    // class-based component
-    // constructor method
-2. Have state keep track of whether the user is logged in or not
-    // isLoggedIn: Boolean (true or false)
-3. Add a button that logs the user in/out
-    // event listener (onClick)
-    a. extra challenge - make the button display "log in" if they're not logged in and "log out" if they are
-        // Conditional Rendering
-4. Display text that says "Logged in" if the user is logged in, or "Logged out" if they're not.
-    // Conditional Rendering
-*/
+import TodoItem from "./components/TodoItem"
+import todosData from "./data/todosData"
 
 class App extends React.Component {
     constructor() {
         super()
         this.state = {
-            isLoggedIn: false
+            todos: todosData
         }
-        this.handleClick = this.handleClick.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
 
-    handleClick() {
+    handleChange(id) {
         this.setState(prevState => {
+            const updatedTodos = prevState.todos.map(todo => {
+                if (todo.id === id) {
+                    todo.completed = !todo.completed
+                }
+                return todo
+            })
             return {
-                isLoggedIn: !prevState.isLoggedIn
+                todos: updatedTodos
             }
         })
     }
 
     render() {
-        let buttonText = this.state.isLoggedIn ? "LOG OUT" : "LOG IN"
-        let displayText = this.state.isLoggedIn ? "Logged in" : "Logged out"
+        const todoItems = this.state.todos.map(item => <TodoItem key={item.id} item={item} handleChange={this.handleChange}/>)
+
         return (
-            <div>
-                <button onClick={this.handleClick}>{buttonText}</button>
-                <h1>{displayText}</h1>
+            <div className="todo-list">
+                {todoItems}
             </div>
         )
     }
